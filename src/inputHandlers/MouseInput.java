@@ -24,22 +24,24 @@ public class MouseInput implements MouseListener {
     public void mousePressed(MouseEvent e) {
         int mx = e.getX();
         int my = e.getY();
-
-        if(mx>= GameConstants.WIDTH/2+120&&mx<=GameConstants.WIDTH / 2 +220){
-            if(my >= 150 && my<=200){
-                this.game.setState(GameState.GAME);
+        if(game.getState()== GameState.MENU) {
+            if (mx >= GameConstants.WIDTH / 2 + 120 && mx <= GameConstants.WIDTH / 2 + 220 ) {
+                if (my >= 150 && my <= 200) {
+                    this.game.setState(GameState.GAME);
+                }
             }
-        }
 
-        if(mx>= GameConstants.WIDTH/2+120&&mx<=GameConstants.WIDTH / 2 +220){
-            if(my >= 250 && my<=300){
-                this.game.setState(GameState.GAME);
+            if (mx >= GameConstants.WIDTH / 2 + 120 && mx <= GameConstants.WIDTH / 2 + 220) {
+                if (my >= 250 && my <= 400) {
+                    System.exit(1);
+                }
             }
-        }
+        }else if(game.getState()== GameState.GAME_OVER){
 
-        if(mx>= GameConstants.WIDTH/2+120&&mx<=GameConstants.WIDTH / 2 +220){
-            if(my >= 350 && my<=400){
-                System.exit(1);
+            if (mx >= GameConstants.WIDTH / 2 + 120 && mx <= GameConstants.WIDTH / 2 + 220) {
+                if (my >= 250 && my <= 400) {
+                    System.exit(1);
+                }
             }
         }
 

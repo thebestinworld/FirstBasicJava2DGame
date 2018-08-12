@@ -3,5 +3,5 @@ package enums;
 public enum GameState {
     MENU,
     GAME,
-    HELP
+    GAME_OVER
 }

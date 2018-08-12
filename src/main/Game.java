@@ -2,6 +2,7 @@ package main;
 
 import constants.GameConstants;
 import controllers.EntityController;
+import controllers.GameOverController;
 import controllers.MenuController;
 import entities.Bullet;
 import entities.HealthPacks;
@@ -28,8 +29,10 @@ public class Game extends Canvas implements Runnable {
     private Player player;
     private EntityController controller;
     private MenuController menu;
+    private GameOverController gameOver;
     private boolean isShooting = false;
     private Random random;
+
 
     private int enemyCount = 5;
     private int enemyKilled = 0;
@@ -60,11 +63,15 @@ public class Game extends Canvas implements Runnable {
         this.controller = new EntityController(this);
         this.player = new Player(200,200,this,controller);
         this.menu = new MenuController();
+        this.gameOver = new GameOverController();
         this.controller.addEnemy(enemyCount);
         this.controller.addHealthPacks(new HealthPacks(random.nextInt(GameConstants.WIDTH * GameConstants.SCALE) ,
                 random.nextInt(GameConstants.HEIGHT* GameConstants.SCALE)
                 ,this.player,this.controller));
+
+
         this.state = GameState.MENU;
+
     }
 
     private synchronized void start(){
@@ -88,6 +95,8 @@ public class Game extends Canvas implements Runnable {
         }
         System.exit(1);
     }
+
+
 
     @Override
     public void run() {
@@ -119,8 +128,11 @@ public class Game extends Canvas implements Runnable {
                     updates=0;
                     frames=0;
                 }
+
             }
-            stop();
+
+                this.stop();
+
     }
 
     private void tick() {
@@ -129,7 +141,8 @@ public class Game extends Canvas implements Runnable {
             this.controller.tick();
         }
         if(player.getHealth() <= 0){
-            System.exit(1);
+            this.state = GameState.GAME_OVER;
+
         }
 
         if(this.enemyKilled >= this.enemyCount){
@@ -167,6 +180,8 @@ public class Game extends Canvas implements Runnable {
             g.drawRect(10,10,200,20);
         }else if(this.state == GameState.MENU){
             this.menu.render(g);
+        }else if(this.state == GameState.GAME_OVER){
+            this.gameOver.render(g);
         }
         //
         g.dispose();
@@ -249,6 +264,8 @@ public class Game extends Canvas implements Runnable {
         return this.controller;
     }
 
+
+
     public static void main(String[] args) {
         Game game = new Game();
 
@@ -265,6 +282,8 @@ public class Game extends Canvas implements Runnable {
         frame.setVisible(true);
 
         game.start();
+
+
     }
 
 
